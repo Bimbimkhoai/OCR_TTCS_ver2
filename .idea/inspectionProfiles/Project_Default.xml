@@ -1,0 +1,54 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSHint" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="32">
+            <item index="0" class="java.lang.String" itemvalue="motor" />
+            <item index="1" class="java.lang.String" itemvalue="alembic" />
+            <item index="2" class="java.lang.String" itemvalue="aiosmtplib" />
+            <item index="3" class="java.lang.String" itemvalue="gatco-jinja2" />
+            <item index="4" class="java.lang.String" itemvalue="gatco-restapi" />
+            <item index="5" class="java.lang.String" itemvalue="qrcode" />
+            <item index="6" class="java.lang.String" itemvalue="mimeparse" />
+            <item index="7" class="java.lang.String" itemvalue="psycopg2-binary" />
+            <item index="8" class="java.lang.String" itemvalue="gatco-sqlalchemy" />
+            <item index="9" class="java.lang.String" itemvalue="gatco-acl" />
+            <item index="10" class="java.lang.String" itemvalue="httptools" />
+            <item index="11" class="java.lang.String" itemvalue="redis" />
+            <item index="12" class="java.lang.String" itemvalue="gatco-auth" />
+            <item index="13" class="java.lang.String" itemvalue="apscheduler" />
+            <item index="14" class="java.lang.String" itemvalue="gatco-apimanager" />
+            <item index="15" class="java.lang.String" itemvalue="itsdangerous" />
+            <item index="16" class="java.lang.String" itemvalue="uvloop" />
+            <item index="17" class="java.lang.String" itemvalue="websockets" />
+            <item index="18" class="java.lang.String" itemvalue="passlib" />
+            <item index="19" class="java.lang.String" itemvalue="xlrd" />
+            <item index="20" class="java.lang.String" itemvalue="gatco" />
+            <item index="21" class="java.lang.String" itemvalue="python-barcode" />
+            <item index="22" class="java.lang.String" itemvalue="phonenumbers" />
+            <item index="23" class="java.lang.String" itemvalue="sanic_cors" />
+            <item index="24" class="java.lang.String" itemvalue="aiofiles" />
+            <item index="25" class="java.lang.String" itemvalue="click" />
+            <item index="26" class="java.lang.String" itemvalue="import-string" />
+            <item index="27" class="java.lang.String" itemvalue="manage.py" />
+            <item index="28" class="java.lang.String" itemvalue="sanic" />
+            <item index="29" class="java.lang.String" itemvalue="Mako" />
+            <item index="30" class="java.lang.String" itemvalue="ujson" />
+            <item index="31" class="java.lang.String" itemvalue="openpyxl" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
+      <option name="processCode" value="true" />
+      <option name="processLiterals" value="true" />
+      <option name="processComments" value="true" />
+    </inspection_tool>
+    <inspection_tool class="Stylelint" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="TsLint" enabled="true" level="WARNING" enabled_by_default="true" />
+  </profile>
+</component>

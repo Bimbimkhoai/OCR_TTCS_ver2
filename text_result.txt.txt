@@ -1,0 +1,37 @@
+| for each new record. The records with the new Pos swere tee be
+
+new tape.
+
+4 to,
+‘ Haw i .
+Nictes
+
+eo é . . i
+toy Lo: re ee
+a 2 SS:
+
+My supervisor showed me a shelf that held imaps stack
+
+punched cards. Imagine that vou bought 30 decks of praying cards. 28 red
+decks, and 25 blue decks. Then vou stacked those decks one on top of the other,
+That's what these stacks of cards looked like. They were striped red and blue,
+and the stripes were about 200 cards cach. Fach one of those stripes contained
+the source code for the subroutine library that the programmers typically used.
+Programmers would saoply take the top deck off the stack, making sure that
+
+they took nothing bat red or bluc cards, and then put that at the end of their
+program deck.
+
+[wrote my prognan on some coding forms Coding torms were large
+
+rectangular sheets of paper divided mito 2s tines and 80 columimys. Pach line
+
+represented one catch You wrote your program on the coding form: using block
+
+capital letters and ae? penal Tn the last cofunins of cach fine vou wrote a
+sequence number with that 2 penal. Pvpreally vou incremented the
+
+number by [Oso that vou could insert cards tater,
+
+ 
+
