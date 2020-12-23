@@ -7,14 +7,14 @@ import numpy as np
 
 def mark_region(image_path):
     im = cv2.imread(image_path)
-    cv2.imshow("im",im)
+
     scale_percent = 20  # percent of original size
     width = int(im.shape[1] * scale_percent / 100)
     height = int(im.shape[0] * scale_percent / 100)
     dim = (width, height)
     # resize image
     im = cv2.resize(im, dim, interpolation=cv2.INTER_AREA)
-
+    cv2.imshow("im", im)
     gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 
     blur = cv2.GaussianBlur(gray, (3, 3), 0)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         cv2.imshow("tr", img)
         cv2.waitKey(0)
         # pytesseract image to string to get results
-        config = '-l vie --oem 1 --psm 7'
+        config = '-l eng --oem 1 --psm 7'
         # text = str(pytesseract.image_to_string(thresh1, config=config))
         text = str(pytesseract.image_to_string(img, config='-l eng --psm 6'))
         # print(text)
