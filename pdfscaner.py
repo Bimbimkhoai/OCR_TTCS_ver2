@@ -1,7 +1,7 @@
 from pdf2image import convert_from_path
 import cv2
 from PIL import Image
-pdfs = r"sample.pdf"
+pdfs = r"OCRtest.pdf"
 pages = convert_from_path(pdfs, 350)
 
 i = 1

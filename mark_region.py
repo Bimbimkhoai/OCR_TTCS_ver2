@@ -5,24 +5,31 @@ import pytesseract
 import numpy as np
 
 
-def mark_region(image_path):
-    im = cv2.imread(image_path)
-
+def resize(im):
     scale_percent = 20  # percent of original size
     width = int(im.shape[1] * scale_percent / 100)
     height = int(im.shape[0] * scale_percent / 100)
     dim = (width, height)
     # resize image
     im = cv2.resize(im, dim, interpolation=cv2.INTER_AREA)
-    cv2.imshow("im", im)
+    return im
+
+
+def remove_non_ascii(text):
+    return ''.join([i if ord(i) < 128 else ' ' for i in text])
+
+
+def mark_region(im):
     gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 
     blur = cv2.GaussianBlur(gray, (3, 3), 0)
     thresh = cv2.adaptiveThreshold(blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 30)
 
     # Dilate to combine adjacent text contours
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 1))
-    dilate = cv2.dilate(thresh, kernel, iterations=3)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 3))
+    dilate = cv2.dilate(thresh, kernel, iterations=2)
+    erode = cv2.erode(dilate, kernel, iterations=2)
+    dilate = cv2.dilate(erode, kernel, iterations=2)
     cv2.imshow("ORIGINAL", dilate)
     cv2.waitKey(0)
     # Find contours, highlight text areas, and extract ROIs
@@ -35,8 +42,8 @@ def mark_region(image_path):
 
         x, y, w, h = cv2.boundingRect(c)
 
-        im = cv2.rectangle(im, (x, y), (500, y + h), color=(255, 0, 255), thickness=1)
-        line_items_coordinates.append([(x, y), (500, y + h)])
+        im = cv2.rectangle(im, (x, y), (600, y + h), color=(255, 0, 255), thickness=1)
+        line_items_coordinates.append([(x, y), (600, y + h)])
 
         # if y >= 600 and x <= 1000:
         #     if area > 10000:
@@ -52,27 +59,36 @@ def mark_region(image_path):
 
 
 if __name__ == '__main__':
-
-    image, line = mark_region("Page_1.jpg")
+    im = cv2.imread("Page_2.jpg")
+    im = resize(im)
+    cv2.imshow("im", im)
+    # Start Mark
+    image, line = mark_region(im)
     ketqua = ""
-    cv2.imshow("aaa", image)
+    cv2.imshow("After Mark", image)
+    im = cv2.imread("Page_2.jpg")
+    im = resize(im)
     for c in line:
         # cropping image img = image[y0:y1, x0:x1]
-        img = image[c[0][1]:c[1][1], c[0][0]:c[1][0]]
+        img = im[c[0][1]:c[1][1], c[0][0]:c[1][0]]
 
-        plt.figure(figsize=(10, 10))
+        # plt.figure(figsize=(10, 10))
 
         # convert the image to black and white for better OCR
         ret, thresh1 = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY)
-        cv2.imshow("tr", img)
-        cv2.waitKey(0)
+        # cv2.imshow("tr", img)
+        # cv2.waitKey(0)
         # pytesseract image to string to get results
-        config = '-l eng --oem 1 --psm 7'
-        # text = str(pytesseract.image_to_string(thresh1, config=config))
         text = str(pytesseract.image_to_string(img, config='-l eng --psm 6'))
+        # text1 = remove_non_ascii(text)
+
+        text = remove_non_ascii(text)
+        text = text.strip()
+        text = text.replace(" ","")
         # print(text)
 
-
-        ketqua = text + " " + ketqua
+        ketqua = text +"\n"+ ketqua
+    f = open("ketqua.txt", "w")
+    f.write(ketqua)
     print(ketqua)
     cv2.waitKey(0)
