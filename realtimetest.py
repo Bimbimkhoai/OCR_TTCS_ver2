@@ -58,7 +58,7 @@ if __name__ == '__main__':
     print("[INFO] loading EAST text detector...")
     net = cv2.dnn.readNet("frozen_east_text_detection.pb")
     print("[INFO] starting video stream...")
-    vs = VideoStream(src="http://192.168.1.197:8080/video").start()
+    vs = VideoStream(src="http://192.168.137.228:8081/").start()
     time.sleep(1)
     fps = FPS().start()
     while True:

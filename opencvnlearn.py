@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import pytesseract
 import time
+from imutils.video import VideoStream
+from imutils.video import FPS
 cam = cv2.VideoCapture(0)
 cam.set(4, 480)  # Width=480
 cam.set(5, 480)  # Height=480

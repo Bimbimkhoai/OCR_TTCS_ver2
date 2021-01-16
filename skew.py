@@ -6,7 +6,7 @@ from scipy.ndimage import interpolation as inter
 
 
 
-img = im.open('test4.jpg')
+img = im.open('Pagetest_1.jpg')
 # convert to binary
 wd, ht = img.size
 pix = np.array(img.convert('1').getdata(), np.uint8)

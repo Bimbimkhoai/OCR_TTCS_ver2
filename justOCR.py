@@ -1,0 +1,143 @@
+import cv2
+from PIL import Image
+import matplotlib.pyplot as plt
+import pytesseract
+import numpy as np
+import string
+from pdf2image import convert_from_path
+import cv2
+
+
+def resize(im):
+    # scale_percent = 22  # percent of original size
+    # width = int(im.shape[1] * scale_percent / 100)
+    # height = int(im.shape[0] * scale_percent / 100)
+    width = 640
+    height = 900
+    dim = (width, height)
+    # resize image
+    im = cv2.resize(im, dim, interpolation=cv2.INTER_AREA)
+    return im
+
+
+def remove_non_ascii(text):
+    listascii = string.ascii_letters + string.digits
+    removed = ''
+    for i in text:
+        if (i in listascii):
+            removed += i
+
+    return removed
+
+
+def mark_region(im):
+    gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+
+    blur = cv2.GaussianBlur(gray, (3, 3), 0)
+    thresh = cv2.adaptiveThreshold(blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 30)
+
+    # Dilate to combine adjacent text contours
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 3))
+    dilate = cv2.dilate(thresh, kernel, iterations=3)
+    erode = cv2.erode(dilate, kernel, iterations=3)
+    dilate = cv2.dilate(erode, kernel, iterations=2)
+    # cv2.imshow("ORIGINAL", dilate)
+    cv2.waitKey(0)
+    # Find contours, highlight text areas, and extract ROIs
+    cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+
+    line_items_coordinates = []
+    for c in cnts:
+        area = cv2.contourArea(c)
+        print(area)
+        x, y, w, h = cv2.boundingRect(c)
+        print(x, y, w, h)
+
+        # im = cv2.rectangle(im, (x, y), (600, y + h), color=(255, 0, 255), thickness=1)
+        # line_items_coordinates.append([(x, y), (600, y + h)])
+
+        if y >= 20 and x <= 640:
+            if area > 7000:
+
+                im = cv2.rectangle(im, (x, y), (620, y + h), color=(26, 232, 39), thickness=1)
+                line_items_coordinates.append([(x, y), (620, y + h)])
+
+        # if y >= 2400 and x <= 2000:
+        #     print("OK2")
+        #     im = cv2.rectangle(im, (x, y), (2200, y + h), color=(26, 232, 39), thickness=1)
+        #     line_items_coordinates.append([(x, y), (2200, y + h)])
+
+    return im, line_items_coordinates
+
+
+def skew_correction(image):
+    # convert the image to grayscale and flip the foreground
+    # and background to ensure foreground is now "white" and
+    # the background is "black"
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.bitwise_not(gray)
+
+    # threshold the image, setting all foreground pixels to
+    # 255 and all background pixels to 0
+    thresh = cv2.threshold(gray, 0, 255,
+                           cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+
+    # grab the (x, y) coordinates of all pixel values that
+    # are greater than zero, then use these coordinates to
+    # compute a rotated bounding box that contains all
+    # coordinates
+    coords = np.column_stack(np.where(thresh > 0))
+    angle = cv2.minAreaRect(coords)[-1]
+    print(cv2.minAreaRect(coords))
+
+    # the `cv2.minAreaRect` function returns values in the
+    # range [-90, 0); as the rectangle rotates clockwise the
+    # returned angle trends to 0 -- in this special case we
+    # need to add 90 degrees to the angle
+    if angle < -45:
+        angle = -(90 + angle)
+
+    # otherwise, just take the inverse of the angle to make
+    # it positive
+    else:
+        angle = -angle
+
+    # rotate the image to deskew it
+    (h, w) = image.shape[:2]
+    center = (w // 2, h // 2)
+    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    rotated = cv2.warpAffine(image, M, (w, h),
+                             flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+    # show the output image
+    print("[INFO] angle: {:.3f}".format(angle))
+
+    return rotated
+
+
+if __name__ == '__main__':
+    pdfs = r"test7.pdf"
+    pages = convert_from_path(pdfs, 350)
+    i = 1
+    ketqua = ""
+    for page in pages:
+        image_name = "Pagetest_" + str(i) + ".jpg"
+        page.save(image_name, "JPEG")
+        i = i + 1
+
+
+        im = cv2.imread(image_name)
+        im = resize(im)
+        cv2.imshow("im",im)
+        pagetext = ""
+
+        ketqua = str(pytesseract.image_to_string(im, config='-l eng --psm 6'))
+
+
+
+        # print(text)
+
+    f = open("ketqua.txt", "w")
+    f.write(ketqua)
+    print(ketqua)
+    cv2.waitKey(0)

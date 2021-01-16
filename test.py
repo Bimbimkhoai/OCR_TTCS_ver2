@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-url = 'http://192.168.101.59:8080/video'
+url = 'http://192.168.137.228:8081/'
 cap = cv2.VideoCapture(url)
 while(True):
     ret, frame = cap.read()
@@ -10,3 +10,6 @@ while(True):
     if q == ord("q"):
         break
 cv2.destroyAllWindows()
+
+
+

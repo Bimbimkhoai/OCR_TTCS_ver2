@@ -26,7 +26,8 @@ if __name__ == '__main__':
             break
 
         frame = imutils.resize(frame, width=1000)
-        orig = frame.copy()
+        orig = frame.copy\
+            ()
         orig_h, orig_w = orig.shape[:2]
 
         if w is None or h is None:
